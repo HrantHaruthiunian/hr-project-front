@@ -1,53 +1,44 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
+    <v-app-bar app color="grey" dark>
       <div class="d-flex align-center">
         <v-img
-          alt="Vuetify Logo"
+          alt="HEX Division Logo"
           class="shrink mr-2"
           contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
+          src="./assets/HEX_Logo.png"
           transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
+          width="80"
         />
       </div>
 
       <v-spacer></v-spacer>
 
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
+      <v-btn href="http://localhost:3000/v1/users" target="_blank" text>
+        <span class="mr-1">Users</span>
+        <v-icon>mdi-open-in-new</v-icon>
+      </v-btn>
+      <v-btn href="http://localhost:3000/v1/requests" target="_blank" text>
+        <span>Vacation requests</span>
+        <v-icon>mdi-open-in-new</v-icon>
+      </v-btn>
+      <v-btn href="http://localhost:3000/v1/notations" target="_blank" text>
+        <span>Notations</span>
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
     </v-app-bar>
 
     <v-main>
-      <HelloWorld/>
+      <HelloWorld />
     </v-main>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+import HelloWorld from "./components/layout/HelloWorld";
 
 export default {
-  name: 'App',
+  name: "App",
 
   components: {
     HelloWorld,
