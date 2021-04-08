@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <div>
     <div id="user-input-form">
       <h2>User input form</h2>
 
@@ -34,7 +34,7 @@
         <v-btn @click="clear"> clear </v-btn>
       </form>
     </div>
-  </v-app>
+  </div>
 </template>
 
 

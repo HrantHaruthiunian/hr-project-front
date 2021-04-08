@@ -1,45 +1,47 @@
 <template>
-  <div id="request-input-form">
-    <h2>Vacation request input form</h2>
+  <div>
+    <div id="request-input-form">
+      <h2>Vacation request input form</h2>
 
-    <form>
-      <v-text-field
-        v-model="title"
-        :error-messages="titleErrors"
-        :counter="25"
-        label="Title"
-        required
-        @input="$v.title.$touch()"
-        @blur="$v.title.$touch()"
-      ></v-text-field>
-      <v-select
-        v-model="status"
-        :items="items"
-        :error-messages="selectErrors"
-        label="Status"
-        required
-        @change="$v.status.$touch()"
-        @blur="$v.status.$touch()"
-      ></v-select>
+      <v-form>
+        <v-text-field
+          v-model="title"
+          :error-messages="titleErrors"
+          :counter="25"
+          label="Title"
+          required
+          @input="$v.title.$touch()"
+          @blur="$v.title.$touch()"
+        ></v-text-field>
+        <v-select
+          v-model="status"
+          :items="items"
+          :error-messages="selectErrors"
+          label="Status"
+          required
+          @change="$v.status.$touch()"
+          @blur="$v.status.$touch()"
+        ></v-select>
 
-      <v-textarea v-model="comment" color="teal">
-        <template v-slot:label>
-          <div>Your comment <small>(optional)</small></div>
-        </template>
-      </v-textarea>
+        <v-textarea v-model="comment" color="teal">
+          <template v-slot:label>
+            <div>Your comment <small>(optional)</small></div>
+          </template>
+        </v-textarea>
 
-      <v-checkbox
-        v-model="checkbox"
-        :error-messages="checkboxErrors"
-        label="Do you confirm ?"
-        required
-        @change="$v.checkbox.$touch()"
-        @blur="$v.checkbox.$touch()"
-      ></v-checkbox>
+        <v-checkbox
+          v-model="checkbox"
+          :error-messages="checkboxErrors"
+          label="Do you confirm ?"
+          required
+          @change="$v.checkbox.$touch()"
+          @blur="$v.checkbox.$touch()"
+        ></v-checkbox>
 
-      <v-btn class="mr-4" @click="submit"> submit </v-btn>
-      <v-btn @click="clear"> clear </v-btn>
-    </form>
+        <v-btn class="mr-4" @click="submit"> submit </v-btn>
+        <v-btn @click="clear"> clear </v-btn>
+      </v-form>
+    </div>
   </div>
 </template>
 
