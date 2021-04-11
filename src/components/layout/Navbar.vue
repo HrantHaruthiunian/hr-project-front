@@ -13,18 +13,18 @@
           </v-list-item-content>
         </v-list-item>
       </template>
-
       <v-divider></v-divider>
-
       <v-list>
         <v-list-item v-for="item in linksDrawer" :key="item.icon">
           <v-list-item-icon>
             <v-icon large>{{ item.icon }}</v-icon>
           </v-list-item-icon>
-
           <v-list-item-content>
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item-content>
+          <v-list-item-action>
+            <popup-user></popup-user>
+          </v-list-item-action>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -76,7 +76,12 @@
 
     <v-navigation-drawer app v-model="menuDrawer" absolute temporary right>
       <v-list>
-        <v-list-item v-for="item in linksMenu" :key="item.title">
+        <v-list-item
+          v-for="item in linksMenu"
+          :key="item.title"
+          router
+          :to="item.route"
+        >
           <v-list-item-icon>
             <v-icon large>{{ item.icon }}</v-icon>
           </v-list-item-icon>
@@ -99,10 +104,13 @@ import {
   mdiChatPlus,
   mdiAllergy,
 } from "@mdi/js";
+import Popup from "./Popup.vue";
 
 export default {
   name: "NavigationBar",
-
+  components: {
+    "popup-user": Popup,
+  },
   data() {
     return {
       icons: {
@@ -114,7 +122,7 @@ export default {
         mdiChatPlus,
         mdiAllergy,
       },
-      menuDrawer: false,
+      menuDrawer: true,
       drawer: true,
 
       linksDrawer: [
@@ -129,14 +137,17 @@ export default {
         {
           icon: mdiAccountMultiple,
           title: "Users",
+          route: "/users",
         },
         {
           icon: mdiBabyCarriage,
           title: "Vacation requests",
+          route: "/requests",
         },
         {
           icon: mdiChatAlert,
           title: "Notations",
+          route: "/notations",
         },
         {
           icon: mdiExitToApp,

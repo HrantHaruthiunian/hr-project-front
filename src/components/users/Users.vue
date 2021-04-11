@@ -1,24 +1,40 @@
 <template>
-  <v-container>
+  <v-container class="blue-grey lighten-5">
     <p>This is: {{ title }}</p>
     <v-row no-gutters>
-      <v-col cols="3"> <v-card outlined tile>Name</v-card></v-col>
-      <v-col cols="3"> <v-card outlined tile>Surname</v-card></v-col>
-      <v-col cols="3"> <v-card outlined tile>Brth date</v-card></v-col>
-      <v-col cols="3"> <v-card outlined tile>Registration date</v-card></v-col>
+      <v-col cols="3">
+        <v-card outlined title class="pa-1 blue-grey lighten-1 text-center"
+          >Name</v-card
+        ></v-col
+      >
+      <v-col cols="3">
+        <v-card outlined title class="pa-1 blue-grey lighten-1 text-center"
+          >Surname</v-card
+        ></v-col
+      >
+      <v-col cols="3">
+        <v-card outlined title class="pa-1 blue-grey lighten-1 text-center"
+          >Brth date</v-card
+        ></v-col
+      >
+      <v-col cols="3">
+        <v-card outlined title class="pa-1 blue-grey lighten-1 text-center"
+          >Registration date</v-card
+        ></v-col
+      >
     </v-row>
-    <v-row no-gutters v-for="user in usersListComputed" :key="user.id">
+    <v-row no-gutters v-for="user in usersListComputed" :key="user.uuid">
       <v-col cols="3">
-        <v-card class="pa-1" outlined tile>{{ user.name }}</v-card>
+        <v-card class="pa-1" outlined title>{{ user.name }}</v-card>
       </v-col>
       <v-col cols="3">
-        <v-card class="pa-1" outlined tile>{{ user.surName }}</v-card>
+        <v-card class="pa-1" outlined title>{{ user.surName }}</v-card>
       </v-col>
       <v-col cols="3">
-        <v-card class="pa-1" outlined tile>{{ user.dateOfBirth }}</v-card>
+        <v-card class="pa-1" outlined title>{{ user.dateOfBirth }}</v-card>
       </v-col>
       <v-col cols="3">
-        <v-card class="pa-1" outlined tile>{{ user.signUpDate }}</v-card>
+        <v-card class="pa-1" outlined title>{{ user.signUpDate }}</v-card>
       </v-col>
     </v-row>
   </v-container>
