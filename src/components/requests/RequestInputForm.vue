@@ -1,8 +1,7 @@
 <template>
-  <div>
-    <div id="request-input-form">
-      <h2>Vacation request input form</h2>
-
+  <v-card height="400px" width="400px" elevation="2" outlined shaped>
+    <v-card-title> Vacation request input form </v-card-title>
+    <v-card-text>
       <v-form>
         <v-text-field
           v-model="title"
@@ -17,7 +16,7 @@
           v-model="status"
           :items="items"
           :error-messages="selectErrors"
-          label="Status"
+          label="Default status"
           required
           @change="$v.status.$touch()"
           @blur="$v.status.$touch()"
@@ -37,12 +36,13 @@
           @change="$v.checkbox.$touch()"
           @blur="$v.checkbox.$touch()"
         ></v-checkbox>
-
-        <v-btn class="mr-4" @click="submit"> submit </v-btn>
-        <v-btn @click="clear"> clear </v-btn>
       </v-form>
-    </div>
-  </div>
+    </v-card-text>
+    <v-card-actions>
+      <v-btn @click="submit"> submit </v-btn>
+      <v-btn @click="clear"> clear </v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
 
 

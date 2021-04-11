@@ -1,31 +1,27 @@
 <template>
-  <div>
-    <div id="users-list">
-      <p>This is: {{ title }}</p>
-      <table border="1">
-        <tr>
-          <td><span>Name</span></td>
-          <td><span>Surname</span></td>
-          <td><span>Brth date</span></td>
-          <td><span>Registration date</span></td>
-        </tr>
-        <tr v-for="user in usersListComputed" :key="user.id">
-          <td>
-            <span>{{ user.name }}</span>
-          </td>
-          <td>
-            <span>{{ user.surName }}</span>
-          </td>
-          <td>
-            <span>{{ user.dateOfBirth }}</span>
-          </td>
-          <td>
-            <span>{{ user.signUpDate }}</span>
-          </td>
-        </tr>
-      </table>
-    </div>
-  </div>
+  <v-container>
+    <p>This is: {{ title }}</p>
+    <v-row no-gutters>
+      <v-col cols="3"> <v-card outlined tile>Name</v-card></v-col>
+      <v-col cols="3"> <v-card outlined tile>Surname</v-card></v-col>
+      <v-col cols="3"> <v-card outlined tile>Brth date</v-card></v-col>
+      <v-col cols="3"> <v-card outlined tile>Registration date</v-card></v-col>
+    </v-row>
+    <v-row no-gutters v-for="user in usersListComputed" :key="user.id">
+      <v-col cols="3">
+        <v-card class="pa-1" outlined tile>{{ user.name }}</v-card>
+      </v-col>
+      <v-col cols="3">
+        <v-card class="pa-1" outlined tile>{{ user.surName }}</v-card>
+      </v-col>
+      <v-col cols="3">
+        <v-card class="pa-1" outlined tile>{{ user.dateOfBirth }}</v-card>
+      </v-col>
+      <v-col cols="3">
+        <v-card class="pa-1" outlined tile>{{ user.signUpDate }}</v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -43,3 +39,9 @@ export default {
   },
 };
 </script>
+<style scoped>
+.container {
+  border: 5px solid rgb(190, 190, 190);
+  background: rgb(226, 226, 226);
+}
+</style>

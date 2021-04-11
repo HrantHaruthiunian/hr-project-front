@@ -9,9 +9,11 @@
   },
   "dependencies": {
     "@mdi/js": "^5.9.55",
+    "bootstrap": "^4.6.0",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
     "vue-resource": "^1.5.2",
+    "vue-router": "^3.5.1",
     "vuelidate": "^0.7.6",
     "vuetify": "^2.4.9",
     "vuex": "^3.6.2"
@@ -22,6 +24,7 @@
     "@types/vuelidate": "^0.7.14",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "babel-eslint": "^10.1.0",
     "deepmerge": "^1.5.2",
