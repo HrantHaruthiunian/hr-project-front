@@ -4,7 +4,7 @@
 
     <v-main>
       <app-users></app-users>
-      <app-request></app-request>
+      <app-requests></app-requests>
       <app-notations></app-notations>
     </v-main>
 
@@ -14,6 +14,7 @@
 
 <script>
 import Navbar from "./components/layout/Navbar.vue";
+
 import Users from "./components/users/Users.vue";
 import Requests from "./components/requests/Requests.vue";
 import Notations from "./components/notations/Notations.vue";
@@ -25,8 +26,9 @@ export default {
 
   components: {
     "app-nav-bar": Navbar,
+
     "app-users": Users,
-    "app-request": Requests,
+    "app-requests": Requests,
     "app-notations": Notations,
 
     "app-footer": Footer,

@@ -5,6 +5,12 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
 
+   actions: {
+
+   },
+
+   mutations: {},
+
    state: {
       users: [
          { uuid: "uuid-1", name: "Name 1", surName: "surName 1", dateOfBirth: "DateOf Birth 1", signUpDate: "signUpDate 1" },
@@ -30,6 +36,12 @@ export const store = new Vuex.Store({
          { uuid: "uuid-2", subject: "Subject 2", openingDate: "opening Date 2", content: "content 2", user_uuid: "by user 2" },
          { uuid: "uuid-3", subject: "Subject 3", openingDate: "opening Date 3", content: "content 3", user_uuid: "by user 3" }
       ],
-   }
+      dialogs: {
+         popupDialog: false,
+      },
+   },
+
+   getters: {}
+
 
 })

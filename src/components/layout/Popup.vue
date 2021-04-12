@@ -1,40 +1,38 @@
 <template>
   <v-row justify="center">
-    <v-dialog v-model="dialog" persistent max-width="600px">
+    <v-dialog v-model="popupDialog" persistent max-width="800px">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="primary" dark v-bind="attrs" v-on="on">
-          Open Dialog
-        </v-btn>
+        <v-list-item v-bind="attrs" v-on="on">
+          <slot name="link"></slot>
+        </v-list-item>
       </template>
 
       <v-card>
-        <h2>here will be the relevant form</h2>
-        <v-card-text>
-          <app-user-form></app-user-form>
-        </v-card-text>
         <v-card-actions>
+          <v-card-subtitle>Plaese fill the fields below</v-card-subtitle>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false">
-            Close
-          </v-btn>
-          <v-btn color="blue darken-1" text @click="dialog = false">
-            Save
-          </v-btn>
+          <v-icon large color="grey darken-1" @click="popupDialog = false">
+            {{ icons.mdiCloseThick }}
+          </v-icon>
         </v-card-actions>
+        <v-card-text>
+          <slot name="form"></slot>
+        </v-card-text>
       </v-card>
     </v-dialog>
   </v-row>
 </template>
 
 <script>
-import UserInputForm from "../users/UserInputForm";
+import { mdiCloseThick } from "@mdi/js";
+
 export default {
-  components: {
-    "app-user-form": UserInputForm,
+  data() {
+    return {
+      popupDialog: this.$store.state.dialogs.popupDialog,
+      icons: { mdiCloseThick },
+    };
   },
-  data: () => ({
-    dialog: false,
-  }),
 };
 </script>
 

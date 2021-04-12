@@ -32,6 +32,10 @@
 
         <v-btn class="mr-4" @click="submit"> submit </v-btn>
         <v-btn @click="clear"> clear </v-btn>
+        <v-spacer />
+        <v-icon large color="grey darken-1" @click="popupDialog = false">
+          {{ icons.mdiCloseThick }}
+        </v-icon>
       </form>
     </div>
   </div>
@@ -41,7 +45,7 @@
 <script>
 import { validationMixin } from "vuelidate";
 import { required, maxLength } from "vuelidate/lib/validators";
-
+import { mdiCloseThick } from "@mdi/js";
 export default {
   mixins: [validationMixin],
 
@@ -51,11 +55,15 @@ export default {
     dateOfBirth: { required },
   },
 
-  data: () => ({
-    name: "",
-    surName: "",
-    dateOfBirth: new Date().toISOString().substr(0, 10),
-  }),
+  data() {
+    return {
+      name: "",
+      surName: "",
+      dateOfBirth: new Date().toISOString().substr(0, 10),
+      popupDialog: this.$store.state.dialogs.popupDialog,
+      icons: { mdiCloseThick },
+    };
+  },
 
   computed: {
     nameErrors() {

@@ -14,17 +14,18 @@
         </v-list-item>
       </template>
       <v-divider></v-divider>
+
       <v-list>
         <v-list-item v-for="item in linksDrawer" :key="item.icon">
-          <v-list-item-icon>
-            <v-icon large>{{ item.icon }}</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
-          <v-list-item-action>
-            <popup-user></popup-user>
-          </v-list-item-action>
+          <popup-user>
+            <v-list-item-icon slot="link">
+              <v-icon medium>{{ item.icon }}</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content slot="link">
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item-content>
+            <user-form slot="form" />
+          </popup-user>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -76,12 +77,7 @@
 
     <v-navigation-drawer app v-model="menuDrawer" absolute temporary right>
       <v-list>
-        <v-list-item
-          v-for="item in linksMenu"
-          :key="item.title"
-          router
-          :to="item.route"
-        >
+        <v-list-item v-for="item in linksMenu" :key="item.title">
           <v-list-item-icon>
             <v-icon large>{{ item.icon }}</v-icon>
           </v-list-item-icon>
@@ -105,11 +101,13 @@ import {
   mdiAllergy,
 } from "@mdi/js";
 import Popup from "./Popup.vue";
+import UserInputForm from "../users/UserInputForm.vue";
 
 export default {
   name: "NavigationBar",
   components: {
     "popup-user": Popup,
+    "user-form": UserInputForm,
   },
   data() {
     return {

@@ -1,6 +1,7 @@
 <template>
   <v-container class="blue-grey lighten-5">
     <p>This is: {{ title }}</p>
+
     <v-row no-gutters>
       <v-col cols="3">
         <v-card outlined title class="pa-1 blue-grey lighten-1 text-center"
