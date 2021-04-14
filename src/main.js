@@ -3,6 +3,7 @@ import App from './App.vue';
 import vuetify from './plugins/vuetify';
 import { store } from './store/store';
 import VueResource from "vue-resource";
+import "material-design-icons-iconfont";
 
 Vue.config.productionTip = false
 

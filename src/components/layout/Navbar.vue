@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-navigation-drawer app v-model="drawer" left>
+    <v-navigation-drawer app left hide-overlay v-model="isLeftMenuVisible">
       <template v-slot:prepend>
         <v-list-item two-line>
           <v-list-item-avatar>
@@ -13,17 +13,28 @@
           </v-list-item-content>
         </v-list-item>
       </template>
+
       <v-divider></v-divider>
 
       <v-list>
-        <v-list-item v-for="item in linksDrawer" :key="item.icon">
+        <v-list-item v-for="item in leftMenuItems" :key="item.title">
           <popup-user>
-            <v-list-item-icon slot="link">
-              <v-icon medium>{{ item.icon }}</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content slot="link">
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
-            </v-list-item-content>
+            <v-list-item slot="link">
+              <v-btn
+                min-width="215px"
+                :ripple="{ class: 'red--text' }"
+                text
+                @click.stop="'show' + item.onClick"
+              >
+                <v-list-item-icon>
+                  <v-icon medium>{{ item.icon }}</v-icon>
+                </v-list-item-icon>
+
+                <v-list-item-content>
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item-content>
+              </v-btn>
+            </v-list-item>
             <user-form slot="form" />
           </popup-user>
         </v-list-item>
@@ -32,7 +43,9 @@
 
     <v-app-bar app>
       <span class="hidden-lg-and-up">
-        <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+        <v-app-bar-nav-icon
+          @click="isLeftMenuVisible = !isLeftMenuVisible"
+        ></v-app-bar-nav-icon>
       </span>
 
       <v-toolbar-title>
@@ -45,114 +58,89 @@
           width="80"
         />
       </v-toolbar-title>
+
       <v-spacer></v-spacer>
 
-      <span class="hidden-sm-and-up">
-        <v-btn @click.stop="menuDrawer = !menuDrawer"> Menu </v-btn>
-      </span>
-
-      <v-toolbar-items class="hidden-xs-only">
-        <v-btn :ripple="{ class: 'red--text' }" text>
-          <v-icon large color="grey darken-2"
-            >{{ icons.mdiAccountMultiple }}
-          </v-icon>
+      <v-toolbar-items>
+        <v-btn :ripple="{ class: 'red--text' }" text @click.stop="showUsers">
+          <v-icon large color="grey darken-2">mdi-account-multiple</v-icon>
           Users
         </v-btn>
-        <v-btn :ripple="{ class: 'red--text' }" text>
-          <v-icon large color="grey darken-2"
-            >{{ icons.mdiBabyCarriage }}
-          </v-icon>
+
+        <v-btn :ripple="{ class: 'red--text' }" text @click.stop="showRequests">
+          <v-icon large color="grey darken-2">mdi-baby-carriage</v-icon>
           Vacation requests
         </v-btn>
-        <v-btn :ripple="{ class: 'red--text' }" text>
-          <v-icon large color="grey darken-2">{{ icons.mdiChatAlert }} </v-icon>
+        <v-btn
+          :ripple="{ class: 'red--text' }"
+          text
+          @click.stop="showNotations"
+        >
+          <v-icon large color="grey darken-2">mdi-chat</v-icon>
           Notations
         </v-btn>
         <v-btn :ripple="{ class: 'red--text' }" text>
-          <v-icon large color="grey darken-1">{{ icons.mdiExitToApp }}</v-icon>
+          <v-icon large color="grey darken-1">mdi-exit-to-app</v-icon>
           Sign Out
         </v-btn>
       </v-toolbar-items>
     </v-app-bar>
-
-    <v-navigation-drawer app v-model="menuDrawer" absolute temporary right>
-      <v-list>
-        <v-list-item v-for="item in linksMenu" :key="item.title">
-          <v-list-item-icon>
-            <v-icon large>{{ item.icon }}</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
   </div>
 </template>
 
 <script>
-import {
-  mdiAccountMultiple,
-  mdiBabyCarriage,
-  mdiChatAlert,
-  mdiExitToApp,
-  mdiAccountPlus,
-  mdiChatPlus,
-  mdiAllergy,
-} from "@mdi/js";
-import Popup from "./Popup.vue";
-import UserInputForm from "../users/UserInputForm.vue";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-  name: "NavigationBar",
-  components: {
-    "popup-user": Popup,
-    "user-form": UserInputForm,
-  },
+  name: "NavBar",
+
   data() {
     return {
-      icons: {
-        mdiAccountMultiple,
-        mdiBabyCarriage,
-        mdiChatAlert,
-        mdiExitToApp,
-        mdiAccountPlus,
-        mdiChatPlus,
-        mdiAllergy,
-      },
-      menuDrawer: true,
-      drawer: true,
+      isLeftMenuVisible: true,
 
-      linksDrawer: [
-        { icon: mdiAccountPlus, title: "Add user" },
-        { icon: mdiAllergy, title: "Add request" },
-        {
-          icon: mdiChatPlus,
-          title: "Add notation",
-        },
-      ],
-      linksMenu: [
-        {
-          icon: mdiAccountMultiple,
-          title: "Users",
-          route: "/users",
-        },
-        {
-          icon: mdiBabyCarriage,
-          title: "Vacation requests",
-          route: "/requests",
-        },
-        {
-          icon: mdiChatAlert,
-          title: "Notations",
-          route: "/notations",
-        },
-        {
-          icon: mdiExitToApp,
-          title: "Sign Out",
-        },
+      leftMenuItems: [
+        { icon: "mdi-account-plus", title: "Add user", onClick: "..." },
+        { icon: "mdi-allergy", title: "Add request", onClick: "..." },
+        { icon: "mdi-chat-plus", title: "Add notation", onClick: "..." },
       ],
     };
+  },
+
+  computed: {
+    ...mapGetters([
+      "getUsersVisibility",
+      "getRequestsVisibility",
+      "getNotationsVisibility",
+    ]),
+  },
+
+  methods: {
+    ...mapActions([
+      "dispatchShowUsers",
+      "dispatchHideUsers",
+      "dispatchShowRequests",
+      "dispatchHideRequests",
+      "dispatchShowNotations",
+      "dispatchHideNotations",
+    ]),
+    showUsers() {
+      this.dispatchShowUsers();
+    },
+    hideUsers() {
+      this.dispatchHideUsers();
+    },
+    showRequests() {
+      this.dispatchShowRequests();
+    },
+    hideRequests() {
+      this.dispatchHideRequests();
+    },
+    showNotations() {
+      this.dispatchShowNotations();
+    },
+    hideNotations() {
+      this.dispatchHideNotations();
+    },
   },
 };
 </script>

@@ -5,13 +5,78 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
 
-   actions: {
+   getters: {
 
+      getPopupStatus(state) {
+         return state.isPopupVisible;
+      },
+      getUsersVisibility(state) {
+         return state.isUsersListVisible;
+      },
+      getRequestsVisibility(state) {
+         return state.isRequestsListVisible;
+      },
+      getNotationsVisibility(state) {
+         return state.isNotationsListVisible;
+      },
    },
 
-   mutations: {},
+   actions: {
+
+      dispatchPopupStatus({ commit }) {
+         commit('changePopupStatus');
+      },
+      dispatchShowUsers({ commit }) {
+         commit('showUsers');
+      },
+      dispatchHideUsers({ commit }) {
+         commit('hideUsers');
+      },
+      dispatchShowRequests({ commit }) {
+         commit('showRequests');
+      },
+      dispatchHideRequests({ commit }) {
+         commit('hideRequests');
+      },
+      dispatchShowNotations({ commit }) {
+         commit('showNotations');
+      },
+      dispatchHideNotations({ commit }) {
+         commit('hideNotations');
+      },
+   },
+
+   mutations: {
+
+      changePopupStatus(state) {
+         state.isPopupVisible = !state.isPopupVisible;
+      },
+      showUsers(state) {
+         state.isUsersListVisible = true;
+      },
+      hideUsers(state) {
+         state.isUsersListVisible = false;
+      },
+      showRequests(state) {
+         state.isRequestsListVisible = true;
+      },
+      hideRequests(state) {
+         state.isRequestsListVisible = false;
+      },
+      showNotations(state) {
+         state.isNotationsListVisible = true;
+      },
+      hideNotations(state) {
+         state.isNotationsListVisible = false;
+      },
+   },
 
    state: {
+      isPopupVisible: false,
+      isUsersListVisible: false,
+      isRequestsListVisible: false,
+      isNotationsListVisible: false,
+
       users: [
          { uuid: "uuid-1", name: "Name 1", surName: "surName 1", dateOfBirth: "DateOf Birth 1", signUpDate: "signUpDate 1" },
          { uuid: "uuid-2", name: "Name 2", surName: "surName 2", dateOfBirth: "DateOf Birth 2", signUpDate: "signUpDate 2" },
@@ -36,12 +101,5 @@ export const store = new Vuex.Store({
          { uuid: "uuid-2", subject: "Subject 2", openingDate: "opening Date 2", content: "content 2", user_uuid: "by user 2" },
          { uuid: "uuid-3", subject: "Subject 3", openingDate: "opening Date 3", content: "content 3", user_uuid: "by user 3" }
       ],
-      dialogs: {
-         popupDialog: false,
-      },
-   },
-
-   getters: {}
-
-
-})
+   }
+});
