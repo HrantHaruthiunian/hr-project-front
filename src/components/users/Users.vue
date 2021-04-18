@@ -31,7 +31,7 @@
           ></v-col
         >
       </v-row>
-      <v-row no-gutters v-for="user in usersListComputed" :key="user.uuid">
+      <v-row no-gutters v-for="user in getAllUsers" :key="user.uuid">
         <v-col cols="3">
           <v-card class="pa-1" outlined title>{{ user.name }}</v-card>
         </v-col>
@@ -55,22 +55,19 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "Users",
 
-  data: () => ({
-    title: "Users component",
-  }),
+  data: () => ({}),
 
   computed: {
-    ...mapGetters([]),
-
-    usersListComputed() {
-      return this.$store.state.users;
-    },
+    ...mapGetters(["getAllUsers"]),
   },
 
   methods: {
-    ...mapActions(["dispatchHideUsers"]),
+    ...mapActions(["dispatchHideUsers", "fetchUsers"]),
     hideUsersList() {
       this.dispatchHideUsers();
+    },
+    async mounted() {
+      this.fetchUsers();
     },
   },
 };

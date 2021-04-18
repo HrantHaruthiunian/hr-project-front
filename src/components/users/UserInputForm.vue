@@ -1,44 +1,70 @@
 <template>
-  <div>
-    <div id="user-input-form">
-      <h2>User input form</h2>
+  <form>
+    <v-text-field
+      v-model="name"
+      :error-messages="nameErrors"
+      :counter="15"
+      label="Name"
+      required
+      outlined
+      shaped
+      @input="$v.name.$touch()"
+      @blur="$v.name.$touch()"
+    >
+    </v-text-field>
+    <v-text-field
+      v-model="surName"
+      :error-messages="surNameErrors"
+      :counter="20"
+      label="Surname"
+      required
+      outlined
+      shaped
+      @input="$v.surName.$touch()"
+      @blur="$v.surName.$touch()"
+    ></v-text-field>
 
-      <form>
-        <v-text-field
-          v-model="name"
-          :error-messages="nameErrors"
-          :counter="15"
-          label="Name"
-          required
-          outlined
-          shaped
-          @input="$v.name.$touch()"
-          @blur="$v.name.$touch()"
-        ></v-text-field>
-        <v-text-field
-          v-model="surName"
-          :error-messages="surNameErrors"
-          :counter="20"
-          label="Surname"
-          required
-          outlined
-          shaped
-          @input="$v.surName.$touch()"
-          @blur="$v.surName.$touch()"
-        ></v-text-field>
-        <v-row justify="center">
-          <v-date-picker v-model="dateOfBirth"></v-date-picker>
-        </v-row>
-
-        <v-btn class="mr-4" @click="submit"> submit </v-btn>
-        <v-btn @click="clear"> clear </v-btn>
+    <v-container>
+      <v-row>
+        <v-col cols="12" lg="6">
+          <v-menu
+            ref="menu1"
+            v-model="menu1"
+            :close-on-content-click="false"
+            transition="scale-transition"
+            offset-y
+            max-width="290px"
+            min-width="auto"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="dateFormatted"
+                label="Date of birth"
+                hint="DD/MM/YYYY format"
+                persistent-hint
+                prepend-icon="mdi-calendar"
+                v-bind="attrs"
+                @blur="dateOfBirth = parseDate(dateFormatted)"
+                v-on="on"
+              ></v-text-field>
+            </template>
+            <v-date-picker
+              v-model="dateOfBirth"
+              no-title
+              @input="menu1 = false"
+            ></v-date-picker>
+          </v-menu>
+        </v-col>
+      </v-row>
+      <v-row>
         <v-spacer />
-        <v-icon large color="grey darken-1" @click="popupDialog = false">
-          {{ icons.mdiCloseThick }}
-        </v-icon>
-      </form>
-    </div>
-  </div>
+        <v-col>
+          <v-btn class="mr-4" @click.stop="submit"> submit </v-btn>
+          <v-btn @click.stop="clear"> clear </v-btn>
+        </v-col>
+      </v-row>
+    </v-container>
+  </form>
 </template>
 
 
@@ -46,7 +72,10 @@
 import { validationMixin } from "vuelidate";
 import { required, maxLength } from "vuelidate/lib/validators";
 import { mdiCloseThick } from "@mdi/js";
+import { mapActions, mapGetters } from "vuex";
+
 export default {
+  name: "UserInputForm",
   mixins: [validationMixin],
 
   validations: {
@@ -60,12 +89,20 @@ export default {
       name: "",
       surName: "",
       dateOfBirth: new Date().toISOString().substr(0, 10),
-      popupDialog: this.$store.state.dialogs.popupDialog,
+      dateFormatted: this.computedDateFormatted,
+      menu1: false,
+
       icons: { mdiCloseThick },
     };
   },
 
   computed: {
+    ...mapGetters(["getPopupStatus"]),
+
+    computedDateFormatted() {
+      return this.formatDate(this.dateOfBirth);
+    },
+
     nameErrors() {
       const errors = [];
       if (!this.$v.name.$dirty) return errors;
@@ -91,15 +128,41 @@ export default {
     },
   },
 
+  watch: {
+    dateOfBirth() {
+      this.dateFormatted = this.formatDate(this.dateOfBirth);
+    },
+  },
+
   methods: {
+    ...mapActions(["dispatchHidePopup"]),
+
+    hidePopup() {
+      this.dispatchHidePopup();
+    },
     submit() {
       this.$v.$touch();
+
+      this.hidePopup();
     },
     clear() {
       this.$v.$reset();
       this.name = "";
       this.surName = "";
       this.dateOfBirth = "";
+    },
+
+    formatDate(date) {
+      if (!date) return null;
+
+      const [year, month, day] = date.split("-");
+      return `${day}/${month}/${year}`;
+    },
+    parseDate(date) {
+      if (!date) return null;
+
+      const [day, month, year] = date.split("/");
+      return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
     },
   },
 };

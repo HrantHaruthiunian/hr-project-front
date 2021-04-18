@@ -1,6 +1,12 @@
 <template>
   <div>
-    <v-navigation-drawer app left hide-overlay v-model="isLeftMenuVisible">
+    <v-navigation-drawer
+      app
+      left
+      hide-overlay
+      class="show-md-and-up"
+      v-model="isLeftMenuVisible"
+    >
       <template v-slot:prepend>
         <v-list-item two-line>
           <v-list-item-avatar>
@@ -16,29 +22,33 @@
 
       <v-divider></v-divider>
 
-      <v-list>
-        <v-list-item v-for="item in leftMenuItems" :key="item.title">
-          <popup-user>
-            <v-list-item slot="link">
+      <popup>
+        <v-list nav slot="link">
+          <v-divider inset></v-divider>
+
+          <v-list-item-group>
+            <v-list-item v-for="item in leftMenuItems" :key="item.name">
               <v-btn
                 min-width="215px"
                 :ripple="{ class: 'red--text' }"
                 text
-                @click.stop="'show' + item.onClick"
+                @click="showPopup(item)"
               >
                 <v-list-item-icon>
                   <v-icon medium>{{ item.icon }}</v-icon>
                 </v-list-item-icon>
 
-                <v-list-item-content>
-                  <v-list-item-title>{{ item.title }}</v-list-item-title>
-                </v-list-item-content>
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
               </v-btn>
             </v-list-item>
-            <user-form slot="form" />
-          </popup-user>
-        </v-list-item>
-      </v-list>
+          </v-list-item-group>
+        </v-list>
+        <template #form>
+          <user-form v-if="userFormState"></user-form>
+          <request-form v-if="requestFormState"></request-form>
+          <notation-form v-if="notationFormState"></notation-form>
+        </template>
+      </popup>
     </v-navigation-drawer>
 
     <v-app-bar app>
@@ -90,24 +100,51 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import Popup from "./Popup";
+import UserInputForm from "../users/UserInputForm";
+import RequestInputForm from "../requests/RequestInputForm";
+import NotationInputForm from "../notations/NotationInputForm";
 
 export default {
   name: "NavBar",
+  components: {
+    popup: Popup,
+    "user-form": UserInputForm,
+    "request-form": RequestInputForm,
+    "notation-form": NotationInputForm,
+  },
 
   data() {
     return {
       isLeftMenuVisible: true,
 
+      userFormState: false,
+      requestFormState: false,
+      notationFormState: false,
+
       leftMenuItems: [
-        { icon: "mdi-account-plus", title: "Add user", onClick: "..." },
-        { icon: "mdi-allergy", title: "Add request", onClick: "..." },
-        { icon: "mdi-chat-plus", title: "Add notation", onClick: "..." },
+        {
+          icon: "mdi-account-plus",
+          title: "Add user",
+          name: "user",
+        },
+        {
+          icon: "mdi-allergy",
+          title: "Add request",
+          name: "request",
+        },
+        {
+          icon: "mdi-chat-plus",
+          title: "Add notation",
+          name: "notation",
+        },
       ],
     };
   },
 
   computed: {
     ...mapGetters([
+      "getPopupStatus",
       "getUsersVisibility",
       "getRequestsVisibility",
       "getNotationsVisibility",
@@ -116,6 +153,7 @@ export default {
 
   methods: {
     ...mapActions([
+      "dispatchShowPopup",
       "dispatchShowUsers",
       "dispatchHideUsers",
       "dispatchShowRequests",
@@ -123,6 +161,21 @@ export default {
       "dispatchShowNotations",
       "dispatchHideNotations",
     ]),
+
+    showPopup(item) {
+      this.dispatchShowPopup();
+
+      if (item.name == "user") {
+        this.userFormState = true;
+        this.requestFormState = this.notationFormState = false;
+      } else if (item.name == "request") {
+        this.requestFormState = true;
+        this.userFormState = this.notationFormState = false;
+      } else {
+        this.notationFormState = true;
+        this.requestFormState = this.userFormState = false;
+      }
+    },
     showUsers() {
       this.dispatchShowUsers();
     },

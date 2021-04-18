@@ -1,6 +1,6 @@
 <template>
-  <v-card height="400px" width="400px" elevation="2" outlined shaped>
-    <v-card-title> Vacation request input form </v-card-title>
+  <v-card elevation="2" outlined shaped>
+    <v-card-title>Vacation request input form </v-card-title>
     <v-card-text>
       <v-form>
         <v-text-field
@@ -49,6 +49,7 @@
 <script>
 import { validationMixin } from "vuelidate";
 import { required, maxLength } from "vuelidate/lib/validators";
+import { mapActions } from "vuex";
 
 export default {
   mixins: [validationMixin],
@@ -64,7 +65,7 @@ export default {
   },
 
   data: () => ({
-    Title: "Vacation request",
+    title: "Vacation request",
     status: "Proposed",
     items: ["Proposed", "Confirmed", "Completed", "Canceled"],
     comment: "",
@@ -95,9 +96,16 @@ export default {
   },
 
   methods: {
+    ...mapActions(["dispatchHidePopup"]),
+
+    hidePopup() {
+      this.dispatchHidePopup();
+    },
     submit() {
       this.$v.$touch();
+      this.hidePopup();
     },
+
     clear() {
       this.$v.$reset();
       this.title = "";

@@ -1,6 +1,9 @@
 <template>
   <v-footer dark app>
-    &copy; {{ new Date().getFullYear() }} — <strong>HEX-Division</strong>
+    <v-spacer></v-spacer>
+    <span>
+      &copy; {{ new Date().getFullYear() }} — <strong>HEX-Division</strong>
+    </span>
   </v-footer>
 </template>
 
