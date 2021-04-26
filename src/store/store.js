@@ -1,65 +1,20 @@
 import axios from 'axios';
 import Vue from 'vue';
 import Vuex from 'vuex';
-
-
 import users from './modules/users.js'
 
 Vue.use(Vuex, axios);
 
 export const store = new Vuex.Store({
 
-   actions: {
-
-      dispatchShowPopup({ commit }) {
-         commit('showPopup');
-      },
-      dispatchHidePopup({ commit }) {
-         commit('hidePopup');
-      },
-
-      dispatchShowRequests({ commit }) {
-         commit('showRequests');
-      },
-      dispatchHideRequests({ commit }) {
-         commit('hideRequests');
-      },
-      dispatchShowNotations({ commit }) {
-         commit('showNotations');
-      },
-      dispatchHideNotations({ commit }) {
-         commit('hideNotations');
-      },
-   },
-
-   mutations: {
-
-      showPopup() {
-         this.state.isPopupOpen = true;
-      },
-      hidePopup() {
-         this.state.isPopupOpen = false;
-      },
-
-      showRequests(state) {
-         state.isRequestsListVisible = true;
-      },
-      hideRequests(state) {
-         state.isRequestsListVisible = false;
-      },
-      showNotations(state) {
-         state.isNotationsListVisible = true;
-      },
-      hideNotations(state) {
-         state.isNotationsListVisible = false;
-      },
-   },
-
    state: {
       isPopupOpen: false,
+      isInfoPopupOpen: false,
+      isSnackbarOpen: false,
 
       isRequestsListVisible: false,
       isNotationsListVisible: false,
+
 
 
       requests: [
@@ -83,17 +38,94 @@ export const store = new Vuex.Store({
       ],
    },
 
+   mutations: {
+
+      showPopup() {
+         this.state.isPopupOpen = true;
+      },
+      hidePopup() {
+         this.state.isPopupOpen = false;
+      },
+      showInfoPopup() {
+         this.state.isInfoPopupOpen = true;
+      },
+      hideInfoPopup() {
+         this.state.isInfoPopupOpen = false;
+      },
+      showSnackbar() {
+         this.state.isSnackbarOpen = true;
+      },
+      hideSnackbar() {
+         this.state.isSnackbarOpen = false;
+      },
+
+
+      showRequests(state) {
+         state.isRequestsListVisible = true;
+      },
+      hideRequests(state) {
+         state.isRequestsListVisible = false;
+      },
+      showNotations(state) {
+         state.isNotationsListVisible = true;
+      },
+      hideNotations(state) {
+         state.isNotationsListVisible = false;
+      },
+   },
+
    getters: {
 
       getPopupStatus(state) {
          return state.isPopupOpen;
       },
-
+      getInfoPopupStatus(state) {
+         return state.isInfoPopupOpen;
+      },
+      getSnackbarStatus(state) {
+         return state.isSnackbarOpen;
+      },
       getRequestsVisibility(state) {
          return state.isRequestsListVisible;
       },
       getNotationsVisibility(state) {
          return state.isNotationsListVisible;
+      },
+
+   },
+
+   actions: {
+
+      dispatchShowPopup({ commit }) {
+         commit('showPopup');
+      },
+      dispatchHidePopup({ commit }) {
+         commit('hidePopup');
+      },
+      dispatchShowInfoPopup({ commit }) {
+         commit('showInfoPopup');
+      },
+      dispatchHideInfoPopup({ commit }) {
+         commit('hideInfoPopup');
+      },
+      SHOW_SNACKBAR({ commit }) {
+         commit('showSnackbar');
+      },
+      HIDE_SNACKBAR({ commit }) {
+         commit('hideSnackbar');
+      },
+
+      dispatchShowRequests({ commit }) {
+         commit('showRequests');
+      },
+      dispatchHideRequests({ commit }) {
+         commit('hideRequests');
+      },
+      dispatchShowNotations({ commit }) {
+         commit('showNotations');
+      },
+      dispatchHideNotations({ commit }) {
+         commit('hideNotations');
       },
    },
 
@@ -101,3 +133,10 @@ export const store = new Vuex.Store({
       users
    }
 });
+
+
+export const apiURLS = {
+   usersAPI: "http://localhost:3000/v1/users/",
+   requestsAPI: "http://localhost:3000/v1/requests/",
+   notationsAPI: "http://localhost:3000/v1/notations/",
+};

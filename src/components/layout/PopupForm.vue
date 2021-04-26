@@ -1,8 +1,8 @@
 <template>
   <v-row justify="center">
     <v-dialog v-model="getPopupStatus" persistent max-width="600px">
-      <template v-slot:activator="{ off, attrs }">
-        <v-list-item v-bind="attrs" v-on="off">
+      <template v-slot:activator="{ attrs }">
+        <v-list-item v-bind="attrs">
           <slot name="link"></slot>
         </v-list-item>
       </template>
@@ -26,7 +26,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 export default {
-  name: "Popup",
+  name: "PopupForm",
   data() {
     return {};
   },

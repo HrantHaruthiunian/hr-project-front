@@ -8,31 +8,61 @@
       v-model="isLeftMenuVisible"
     >
       <template v-slot:prepend>
-        <v-list-item two-line>
+        <v-list-item three-line>
           <v-list-item-avatar>
             <img src="../../assets/MyPic2.jpg" />
           </v-list-item-avatar>
 
           <v-list-item-content>
             <v-list-item-title>Hrant Harutyunyan</v-list-item-title>
-            <v-list-item-subtitle>Logged In</v-list-item-subtitle>
+            <v-list-item-subtitle> Logged In </v-list-item-subtitle>
+            <br />
+            <br />
+            <v-list-item-subtitle>
+              <v-dialog v-model="dialog" persistent max-width="600px">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn color="primary" dark v-bind="attrs" v-on="on" text>
+                    Edit profile
+                    <v-icon class="ml-2" medium>mdi-account-edit</v-icon>
+                  </v-btn>
+                </template>
+                <template v-slot:default>
+                  <v-card>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-icon medium @click="dialog = false">mdi-close</v-icon>
+                    </v-card-actions>
+
+                    <v-card-title>
+                      <span>Please update the data below</span>
+                    </v-card-title>
+
+                    <user-profile @closeDialog="dialog = false"></user-profile>
+                  </v-card>
+                </template>
+              </v-dialog>
+            </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </template>
 
       <v-divider></v-divider>
 
-      <popup>
+      <popupForm>
         <v-list nav slot="link">
           <v-divider inset></v-divider>
 
           <v-list-item-group>
-            <v-list-item v-for="item in leftMenuItems" :key="item.name">
+            <v-list-item
+              class="mt-2"
+              v-for="item in leftMenuItems"
+              :key="item.name"
+            >
               <v-btn
                 min-width="215px"
                 :ripple="{ class: 'red--text' }"
-                text
                 @click="showPopup(item)"
+                text
               >
                 <v-list-item-icon>
                   <v-icon medium>{{ item.icon }}</v-icon>
@@ -43,12 +73,13 @@
             </v-list-item>
           </v-list-item-group>
         </v-list>
-        <template #form>
+
+        <template v-slot:form>
           <user-form v-if="userFormState"></user-form>
           <request-form v-if="requestFormState"></request-form>
           <notation-form v-if="notationFormState"></notation-form>
         </template>
-      </popup>
+      </popupForm>
     </v-navigation-drawer>
 
     <v-app-bar app>
@@ -72,20 +103,16 @@
       <v-spacer></v-spacer>
 
       <v-toolbar-items>
-        <v-btn :ripple="{ class: 'red--text' }" text @click.stop="showUsers">
+        <v-btn :ripple="{ class: 'red--text' }" text @click="showUsers">
           <v-icon large color="grey darken-2">mdi-account-multiple</v-icon>
           Users
         </v-btn>
 
-        <v-btn :ripple="{ class: 'red--text' }" text @click.stop="showRequests">
+        <v-btn :ripple="{ class: 'red--text' }" text @click="showRequests">
           <v-icon large color="grey darken-2">mdi-baby-carriage</v-icon>
           Vacation requests
         </v-btn>
-        <v-btn
-          :ripple="{ class: 'red--text' }"
-          text
-          @click.stop="showNotations"
-        >
+        <v-btn :ripple="{ class: 'red--text' }" text @click="showNotations">
           <v-icon large color="grey darken-2">mdi-chat</v-icon>
           Notations
         </v-btn>
@@ -100,16 +127,18 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import Popup from "./Popup";
+import PopupForm from "./PopupForm";
 import UserInputForm from "../users/UserInputForm";
+import UserProfile from "../users/UserProfile";
 import RequestInputForm from "../requests/RequestInputForm";
 import NotationInputForm from "../notations/NotationInputForm";
 
 export default {
   name: "NavBar",
   components: {
-    popup: Popup,
+    popupForm: PopupForm,
     "user-form": UserInputForm,
+    "user-profile": UserProfile,
     "request-form": RequestInputForm,
     "notation-form": NotationInputForm,
   },
@@ -117,7 +146,7 @@ export default {
   data() {
     return {
       isLeftMenuVisible: true,
-
+      dialog: false,
       userFormState: false,
       requestFormState: false,
       notationFormState: false,

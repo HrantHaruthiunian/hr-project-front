@@ -3,7 +3,10 @@
     <app-nav-bar></app-nav-bar>
 
     <v-main>
-      <app-users v-if="getUsersVisibility"></app-users>
+      <app-users
+        v-if="getUsersVisibility"
+        :key="getRefreshUsersComponent"
+      ></app-users>
       <app-requests v-if="getRequestsVisibility"></app-requests>
       <app-notations v-if="getNotationsVisibility"></app-notations>
     </v-main>
@@ -31,11 +34,16 @@ export default {
     "app-footer": Footer,
   },
 
+  async created() {
+    this.$store.dispatch("fetchUsers");
+  },
+
   computed: {
     ...mapGetters([
       "getUsersVisibility",
       "getRequestsVisibility",
       "getNotationsVisibility",
+      "getRefreshUsersComponent",
     ]),
   },
 };

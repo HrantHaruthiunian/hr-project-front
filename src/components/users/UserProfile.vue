@@ -1,7 +1,7 @@
 <template>
   <form>
     <v-text-field
-      v-model="user.name"
+      v-model="user1.name"
       :error-messages="nameErrors"
       :counter="15"
       label="Name"
@@ -13,7 +13,7 @@
     >
     </v-text-field>
     <v-text-field
-      v-model="user.surName"
+      v-model="user1.surName"
       :error-messages="surNameErrors"
       :counter="20"
       label="Surname"
@@ -36,7 +36,7 @@
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
-              v-model="user.dateOfBirth"
+              v-model="user1.dateOfBirth"
               label="Birthday date"
               prepend-icon="mdi-calendar"
               readonly
@@ -46,15 +46,16 @@
           </template>
           <v-date-picker
             ref="picker"
-            v-model="user.dateOfBirth"
+            v-model="user1.dateOfBirth"
             :max="new Date().toISOString().substr(0, 10)"
             min="1950-01-01"
             @change="save"
           ></v-date-picker>
         </v-menu>
       </template>
-      <v-btn class="mr-4" @click="submit"> submit </v-btn>
-      <v-btn @click="clear"> clear </v-btn>
+      <div align="center">
+        <v-btn class="mr-4" @click="submit()"> submit </v-btn>
+      </div>
     </v-container>
   </form>
 </template>
@@ -63,7 +64,7 @@
 <script>
 import { validationMixin } from "vuelidate";
 import { required, maxLength } from "vuelidate/lib/validators";
-import { mdiCloseThick } from "@mdi/js";
+
 import { mapActions, mapGetters } from "vuex";
 
 export default {
@@ -80,21 +81,18 @@ export default {
 
   data() {
     return {
-      user: {
-        name: "",
-        surName: "",
-        dateOfBirth: new Date().toISOString().substr(0, 10),
-      },
-
+      user1: {},
       dateFormatted: this.computedDateFormatted,
       menu: false,
-
-      icons: { mdiCloseThick },
     };
   },
 
+  created() {
+    this.user1 = this.getAllUsers[0];
+  },
+
   computed: {
-    ...mapGetters(["getPopupStatus"]),
+    ...mapGetters(["getAllUsers"]),
 
     computedDateFormatted() {
       return this.formatDate(this.user.dateOfBirth);
@@ -132,22 +130,17 @@ export default {
   },
 
   methods: {
-    ...mapActions(["dispatchHidePopup", "ADD_USER"]),
+    ...mapActions(["UPDATE_USER"]),
 
-    hidePopup() {
-      this.dispatchHidePopup();
+    closeDialog() {
+      this.$emit("closeDialog");
     },
     submit() {
       this.$v.$touch();
-      this.ADD_USER(this.user);
-      this.hidePopup();
+      this.UPDATE_USER(this.user1);
+      this.closeDialog();
     },
-    clear() {
-      this.$v.$reset();
-      this.user.name = "";
-      this.user.surName = "";
-      this.user.dateOfBirth = "";
-    },
+
     save(date) {
       this.$refs.menu.save(date);
     },

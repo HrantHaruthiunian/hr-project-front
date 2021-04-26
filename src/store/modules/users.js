@@ -1,28 +1,12 @@
 import axios from 'axios';
+import { apiURLS } from '../store.js'
 
 export default {
-   actions: {
-      dispatchShowUsers({ commit }) {
-         commit('showUsers');
-      },
-      dispatchHideUsers({ commit }) {
-         commit('hideUsers');
-      },
 
-      async fetchUsers({ commit }) {
-         return axios("http://localhost:3000/v1/users", { method: 'GET' })
-            .then((response) => {
-               commit('updateUsers', response.data);
-               return response;
-            });
-
-
-         // const res = await fetch("http://localhost:3000/v1/users");
-         // const users = await res.json();
-         // this.users = users;
-         // ctx.commit("updateUsers", users);
-
-      }
+   state: {
+      isUsersListVisible: false,
+      users: [],
+      keyUsersList: 0,
    },
 
    mutations: {
@@ -32,19 +16,25 @@ export default {
       hideUsers(state) {
          state.isUsersListVisible = false;
       },
-      updateUsers(state, users) {
+      SET_USERS(state, users) {
          state.users = users;
-      }
-   },
+      },
+      newUser(state, user) {
+         state.users.unshift(user);
+      },
+      deleteUser(state, uuid) {
+         state.users = state.users.filter(user => user.uuid !== uuid);
+      },
+      UPDATE_USER(state, response) {
+         const updatedUser = JSON.parse(response.config.data);
+         const index = state.users.findIndex(user => user.uuid === updatedUser.uuid);
+         state.users[index] = updatedUser;
+         this.commit('forceRefreshUsersComponent');
+      },
+      forceRefreshUsersComponent(state) {
+         state.keyUsersList += 1;
+      },
 
-   state: {
-      isUsersListVisible: false,
-      users: [],
-      usersOld: [
-         { uuid: "uuid-1", name: "Name 1", surName: "surName 1", dateOfBirth: "DateOf Birth 1", signUpDate: "signUpDate 1" },
-         { uuid: "uuid-2", name: "Name 2", surName: "surName 2", dateOfBirth: "DateOf Birth 2", signUpDate: "signUpDate 2" },
-         { uuid: "uuid-3", name: "Name 3", surName: "surName 3", dateOfBirth: "DateOf Birth 3", signUpDate: "signUpDate 3" }
-      ],
    },
 
    getters: {
@@ -53,8 +43,67 @@ export default {
       },
       getAllUsers(state) {
          return state.users;
-      }
+      },
+      getRefreshUsersComponent(state) {
+         return +state.keyUsersList;
+      },
+   },
+
+   actions: {
+      dispatchShowUsers({ commit }) {
+         commit('showUsers');
+      },
+      dispatchHideUsers({ commit }) {
+         commit('hideUsers');
+      },
+
+      async fetchUsers({ commit }) {
+         return axios.get(apiURLS.usersAPI)
+            .then((response) => {
+               commit('SET_USERS', response.data);
+               return response;
+            })
+            .catch((error) => {
+               console.log(error);
+            });
+      },
+
+
+      async ADD_USER({ commit }, user) {
+         return axios.post(apiURLS.usersAPI, user)
+            .then((response) => {
+               commit('newUser', response.data);
+            })
+            .catch((error) => {
+               console.log(error);
+            });
+      },
+
+      async UPDATE_USER({ commit }, user) {
+         return axios.patch(`${apiURLS.usersAPI}${user.uuid}`, user)
+            .then((response) => {
+               commit('UPDATE_USER', response);
+            })
+            .catch((error) => {
+               console.log(error);
+            });
+      },
+
+      async DELETE_USER({ commit }, uuid) {
+         return axios.delete(`${apiURLS.usersAPI}${uuid}`)
+            .then(
+               () => {
+                  commit('deleteUser', uuid);
+               })
+            .catch((error) => {
+               console.log(error);
+            });
+      },
+
+
+
 
    },
 
 }
+
