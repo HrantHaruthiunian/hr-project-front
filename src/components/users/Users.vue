@@ -2,15 +2,20 @@
   <div>
     <v-expand-transition
       ><v-container class="blue-grey lighten-5">
-        <v-card class="pa-1" outlined title>
-          <v-card-actions>
-            <span>Users list</span>
+        <v-row>
+          <v-col cols="12">
+            <v-card class="pa-1" outlined title>
+              <v-card-actions>
+                <span>Users list</span>
 
-            <v-spacer></v-spacer>
-            <v-icon class="right" @click.stop="hideUsersList">mdi-close</v-icon>
-          </v-card-actions>
-        </v-card>
-
+                <v-spacer></v-spacer>
+                <v-icon class="right" @click.stop="hideUsersList"
+                  >mdi-close</v-icon
+                >
+              </v-card-actions>
+            </v-card>
+          </v-col>
+        </v-row>
         <v-row no-gutters>
           <v-col cols="3">
             <v-card outlined title class="pa-1 blue-grey lighten-1 text-center"
@@ -58,30 +63,18 @@
           </v-col>
           <v-col cols="2">
             <v-card class="pa-1" outlined title>
-              <popup :action="toDelete" @deleteApproved="toDelete = true">
-                <template v-slot:linkInfo>
-                  <v-btn
-                    class="mx-auto"
-                    height="auto"
-                    @click="deleteUser(user.uuid)"
-                  >
+              <popup-delete>
+                <template #linkInfo>
+                  <v-btn class="mx-auto" height="auto" @click="showPopup(user)">
                     <v-icon medium color="grey darken-1">mdi-delete</v-icon>
                   </v-btn>
                 </template>
-                <template v-slot:message>
-                  <div align="center">
-                    <span
-                      >Are you sure you whant to permenently delete
-                      {{ user.name }} {{ user.surName }} ?</span
-                    >
-                  </div>
-                  <br />
-                </template>
-              </popup>
+              </popup-delete>
             </v-card>
           </v-col>
-        </v-row> </v-container
-    ></v-expand-transition>
+        </v-row>
+      </v-container></v-expand-transition
+    >
     <snackbar></snackbar>
   </div>
 </template>
@@ -89,19 +82,15 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 
-import Popup from "../layout/PopupInfo.vue";
+import PopupDelete from "../layout/PopupDelete.vue";
 import Snackbar from "../layout/Snackbar.vue";
 
 export default {
   name: "Users",
+
   components: {
-    popup: Popup,
+    "popup-delete": PopupDelete,
     snackbar: Snackbar,
-  },
-  data() {
-    return {
-      toDelete: false,
-    };
   },
 
   computed: {
@@ -109,34 +98,14 @@ export default {
   },
 
   methods: {
-    ...mapActions([
-      "dispatchHideUsers",
-      "DELETE_USER",
-      "dispatchHideInfoPopup",
-      "dispatchShowInfoPopup",
-      "SHOW_SNACKBAR",
-    ]),
+    ...mapActions(["HIDE_USERS_LIST", "SHOW_deletePOPUP"]),
+
     hideUsersList() {
-      this.dispatchHideUsers();
+      this.HIDE_USERS_LIST();
     },
 
-    deleteUser(uuid) {
-      this.showPopup();
-      if (this.toDelete == true) {
-        this.DELETE_USER(uuid);
-        this.hidePopup();
-        this.SHOW_SNACKBAR();
-      } else {
-        console.log("Item was NOT deleted");
-      }
-    },
-
-    hidePopup() {
-      this.dispatchHideInfoPopup();
-    },
-    showPopup() {
-      this.dispatchShowInfoPopup();
-      return true;
+    showPopup(user) {
+      this.SHOW_deletePOPUP(user);
     },
   },
 };

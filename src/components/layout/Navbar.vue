@@ -48,15 +48,15 @@
 
       <v-divider></v-divider>
 
-      <popupForm>
-        <v-list nav slot="link">
+      <popup-form>
+        <v-list slot="link">
           <v-divider inset></v-divider>
 
           <v-list-item-group>
             <v-list-item
               class="mt-2"
-              v-for="item in leftMenuItems"
-              :key="item.name"
+              v-for="(item, index) in leftMenuItems"
+              :key="index"
             >
               <v-btn
                 min-width="215px"
@@ -79,7 +79,7 @@
           <request-form v-if="requestFormState"></request-form>
           <notation-form v-if="notationFormState"></notation-form>
         </template>
-      </popupForm>
+      </popup-form>
     </v-navigation-drawer>
 
     <v-app-bar app>
@@ -136,7 +136,7 @@ import NotationInputForm from "../notations/NotationInputForm";
 export default {
   name: "NavBar",
   components: {
-    popupForm: PopupForm,
+    "popup-form": PopupForm,
     "user-form": UserInputForm,
     "user-profile": UserProfile,
     "request-form": RequestInputForm,
@@ -173,7 +173,6 @@ export default {
 
   computed: {
     ...mapGetters([
-      "getPopupStatus",
       "getUsersVisibility",
       "getRequestsVisibility",
       "getNotationsVisibility",
@@ -182,17 +181,17 @@ export default {
 
   methods: {
     ...mapActions([
-      "dispatchShowPopup",
-      "dispatchShowUsers",
-      "dispatchHideUsers",
-      "dispatchShowRequests",
-      "dispatchHideRequests",
-      "dispatchShowNotations",
-      "dispatchHideNotations",
+      "SHOW_formPOPUP",
+      "SHOW_USERS_LIST",
+      "HIDE_USERS_LIST",
+      "SHOW_REQUESTS_LIST",
+      "HIDE_REQUESTS_LIST",
+      "SHOW_NOTATIONS_LIST",
+      "HIDE_NOTATIONS_LIST",
     ]),
 
     showPopup(item) {
-      this.dispatchShowPopup();
+      this.SHOW_formPOPUP();
 
       if (item.name == "user") {
         this.userFormState = true;
@@ -206,22 +205,22 @@ export default {
       }
     },
     showUsers() {
-      this.dispatchShowUsers();
+      this.SHOW_USERS_LIST();
     },
     hideUsers() {
-      this.dispatchHideUsers();
+      this.HIDE_USERS_LIST();
     },
     showRequests() {
-      this.dispatchShowRequests();
+      this.SHOW_REQUESTS_LIST();
     },
     hideRequests() {
-      this.dispatchHideRequests();
+      this.HIDE_REQUESTS_LIST();
     },
     showNotations() {
-      this.dispatchShowNotations();
+      this.SHOW_NOTATIONS_LIST();
     },
     hideNotations() {
-      this.dispatchHideNotations();
+      this.HIDE_NOTATIONS_LIST();
     },
   },
 };

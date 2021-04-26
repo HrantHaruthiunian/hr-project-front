@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-dialog v-model="getPopupStatus" persistent max-width="600px">
+    <v-dialog v-model="getFormPopupStatus" persistent max-width="600px">
       <template v-slot:activator="{ attrs }">
         <v-list-item v-bind="attrs">
           <slot name="link"></slot>
@@ -31,13 +31,14 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters(["getPopupStatus"]),
+    ...mapGetters(["getFormPopupStatus"]),
   },
 
   methods: {
-    ...mapActions(["dispatchHidePopup"]),
+    ...mapActions(["HIDE_formPOPUP"]),
+
     hidePopup() {
-      this.dispatchHidePopup();
+      this.HIDE_formPOPUP();
     },
   },
 };

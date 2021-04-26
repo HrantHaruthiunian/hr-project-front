@@ -5,9 +5,7 @@
         <v-card-actions>
           <span>Requests list</span>
           <v-spacer></v-spacer>
-          <v-icon class="right" @click.stop="hideRequestsList"
-            >mdi-close</v-icon
-          >
+          <v-icon class="right" @click="hideRequestsList">mdi-close</v-icon>
         </v-card-actions>
       </v-card>
       <v-row no-gutters>
@@ -90,9 +88,10 @@ export default {
   },
 
   methods: {
-    ...mapActions(["dispatchHideRequests"]),
+    ...mapActions(["HIDE_REQUESTS_LIST"]),
+
     hideRequestsList() {
-      this.dispatchHideRequests();
+      this.HIDE_REQUESTS_LIST();
     },
   },
 };

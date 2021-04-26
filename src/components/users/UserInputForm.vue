@@ -132,10 +132,10 @@ export default {
   },
 
   methods: {
-    ...mapActions(["dispatchHidePopup", "ADD_USER"]),
+    ...mapActions(["HIDE_formPOPUP", "ADD_USER"]),
 
     hidePopup() {
-      this.dispatchHidePopup();
+      this.HIDE_formPOPUP();
     },
     submit() {
       this.$v.$touch();

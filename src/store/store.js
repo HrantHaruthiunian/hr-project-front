@@ -8,13 +8,13 @@ Vue.use(Vuex, axios);
 export const store = new Vuex.Store({
 
    state: {
-      isPopupOpen: false,
-      isInfoPopupOpen: false,
+      isFormPopupOpen: false,
+      isDeletePopupOpen: false,
       isSnackbarOpen: false,
 
       isRequestsListVisible: false,
       isNotationsListVisible: false,
-
+      userToDelete: {},
 
 
       requests: [
@@ -40,47 +40,48 @@ export const store = new Vuex.Store({
 
    mutations: {
 
-      showPopup() {
-         this.state.isPopupOpen = true;
+      show_formPopup() {
+         this.state.isFormPopupOpen = true;
       },
-      hidePopup() {
-         this.state.isPopupOpen = false;
+      hide_formPopup() {
+         this.state.isFormPopupOpen = false;
       },
-      showInfoPopup() {
-         this.state.isInfoPopupOpen = true;
+      show_deletePopup(state, user) {
+         this.state.isDeletePopupOpen = true;
+         this.state.userToDelete = user;
       },
-      hideInfoPopup() {
-         this.state.isInfoPopupOpen = false;
+      hide_deletePopup() {
+         this.state.isDeletePopupOpen = false;
       },
-      showSnackbar() {
+      show_Snackbar() {
          this.state.isSnackbarOpen = true;
       },
-      hideSnackbar() {
+      hide_Snackbar() {
          this.state.isSnackbarOpen = false;
       },
 
 
-      showRequests(state) {
+      show_Requests(state) {
          state.isRequestsListVisible = true;
       },
-      hideRequests(state) {
+      hide_Requests(state) {
          state.isRequestsListVisible = false;
       },
-      showNotations(state) {
+      show_Notations(state) {
          state.isNotationsListVisible = true;
       },
-      hideNotations(state) {
+      hide_Notations(state) {
          state.isNotationsListVisible = false;
       },
    },
 
    getters: {
 
-      getPopupStatus(state) {
-         return state.isPopupOpen;
+      getFormPopupStatus(state) {
+         return state.isFormPopupOpen;
       },
-      getInfoPopupStatus(state) {
-         return state.isInfoPopupOpen;
+      getDeletePopupStatus(state) {
+         return state.isDeletePopupOpen;
       },
       getSnackbarStatus(state) {
          return state.isSnackbarOpen;
@@ -91,41 +92,44 @@ export const store = new Vuex.Store({
       getNotationsVisibility(state) {
          return state.isNotationsListVisible;
       },
+      getUserToDelete(state) {
+         return state.userToDelete;
+      },
 
    },
 
    actions: {
 
-      dispatchShowPopup({ commit }) {
-         commit('showPopup');
+      SHOW_formPOPUP({ commit }) {
+         commit('show_formPopup');
       },
-      dispatchHidePopup({ commit }) {
-         commit('hidePopup');
+      HIDE_formPOPUP({ commit }) {
+         commit('hide_formPopup');
       },
-      dispatchShowInfoPopup({ commit }) {
-         commit('showInfoPopup');
+      SHOW_deletePOPUP({ commit }, user) {
+         commit('show_deletePopup', user);
       },
-      dispatchHideInfoPopup({ commit }) {
-         commit('hideInfoPopup');
+      HIDE_deletePOPUP({ commit }) {
+         commit('hide_deletePopup');
       },
       SHOW_SNACKBAR({ commit }) {
-         commit('showSnackbar');
+         commit('show_Snackbar');
       },
       HIDE_SNACKBAR({ commit }) {
-         commit('hideSnackbar');
+         commit('hide_Snackbar');
       },
 
-      dispatchShowRequests({ commit }) {
-         commit('showRequests');
+      SHOW_REQUESTS_LIST({ commit }) {
+         commit('show_Requests');
       },
-      dispatchHideRequests({ commit }) {
-         commit('hideRequests');
+      HIDE_REQUESTS_LIST({ commit }) {
+         commit('hide_Requests');
       },
-      dispatchShowNotations({ commit }) {
-         commit('showNotations');
+      SHOW_NOTATIONS_LIST({ commit }) {
+         commit('show_Notations');
       },
-      dispatchHideNotations({ commit }) {
-         commit('hideNotations');
+      HIDE_NOTATIONS_LIST({ commit }) {
+         commit('hide_Notations');
       },
    },
 

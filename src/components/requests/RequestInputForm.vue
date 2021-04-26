@@ -96,10 +96,10 @@ export default {
   },
 
   methods: {
-    ...mapActions(["dispatchHidePopup"]),
+    ...mapActions(["HIDE_formPOPUP"]),
 
     hidePopup() {
-      this.dispatchHidePopup();
+      this.HIDE_formPOPUP();
     },
     submit() {
       this.$v.$touch();

@@ -1,7 +1,7 @@
 <template>
   <div class="text-center ma-2">
     <v-snackbar v-model="getSnackbarStatus">
-      <slot> Item was deleted </slot>
+      <slot name="message"> Item was deleted </slot>
 
       <template v-slot:action="{ attrs }">
         <v-btn color="pink" text v-bind="attrs" @click="hideSnackbar">

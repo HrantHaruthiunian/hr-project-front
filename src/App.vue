@@ -35,7 +35,7 @@ export default {
   },
 
   async created() {
-    this.$store.dispatch("fetchUsers");
+    this.$store.dispatch("FETCH_USERS");
   },
 
   computed: {

@@ -10,28 +10,28 @@ export default {
    },
 
    mutations: {
-      showUsers(state) {
+      show_users(state) {
          state.isUsersListVisible = true;
       },
-      hideUsers(state) {
+      hide_users(state) {
          state.isUsersListVisible = false;
       },
-      SET_USERS(state, users) {
+      set_users(state, users) {
          state.users = users;
       },
-      newUser(state, user) {
+      add_new_user(state, user) {
          state.users.unshift(user);
       },
-      deleteUser(state, uuid) {
+      delete_user(state, uuid) {
          state.users = state.users.filter(user => user.uuid !== uuid);
       },
-      UPDATE_USER(state, response) {
+      update_user(state, response) {
          const updatedUser = JSON.parse(response.config.data);
          const index = state.users.findIndex(user => user.uuid === updatedUser.uuid);
          state.users[index] = updatedUser;
-         this.commit('forceRefreshUsersComponent');
+         this.commit('refresh_users_component');
       },
-      forceRefreshUsersComponent(state) {
+      refresh_users_component(state) {
          state.keyUsersList += 1;
       },
 
@@ -45,22 +45,22 @@ export default {
          return state.users;
       },
       getRefreshUsersComponent(state) {
-         return +state.keyUsersList;
+         return state.keyUsersList;
       },
    },
 
    actions: {
-      dispatchShowUsers({ commit }) {
-         commit('showUsers');
+      SHOW_USERS_LIST({ commit }) {
+         commit('show_users');
       },
-      dispatchHideUsers({ commit }) {
-         commit('hideUsers');
+      HIDE_USERS_LIST({ commit }) {
+         commit('hide_users');
       },
 
-      async fetchUsers({ commit }) {
+      async FETCH_USERS({ commit }) {
          return axios.get(apiURLS.usersAPI)
             .then((response) => {
-               commit('SET_USERS', response.data);
+               commit('set_users', response.data);
                return response;
             })
             .catch((error) => {
@@ -72,7 +72,7 @@ export default {
       async ADD_USER({ commit }, user) {
          return axios.post(apiURLS.usersAPI, user)
             .then((response) => {
-               commit('newUser', response.data);
+               commit('add_new_user', response.data);
             })
             .catch((error) => {
                console.log(error);
@@ -82,7 +82,7 @@ export default {
       async UPDATE_USER({ commit }, user) {
          return axios.patch(`${apiURLS.usersAPI}${user.uuid}`, user)
             .then((response) => {
-               commit('UPDATE_USER', response);
+               commit('update_user', response);
             })
             .catch((error) => {
                console.log(error);
@@ -93,7 +93,7 @@ export default {
          return axios.delete(`${apiURLS.usersAPI}${uuid}`)
             .then(
                () => {
-                  commit('deleteUser', uuid);
+                  commit('delete_user', uuid);
                })
             .catch((error) => {
                console.log(error);

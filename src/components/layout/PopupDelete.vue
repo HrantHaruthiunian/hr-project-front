@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center">
     <v-dialog
-      v-model="getInfoPopupStatus"
+      v-model="getDeletePopupStatus"
       persistent
       :retain-focus="false"
       max-width="600px"
@@ -21,10 +21,15 @@
           >
         </v-card-actions>
         <v-card-text>
-          <slot name="message"></slot>
+          <div align="center">
+            Are you sure you whant to permenently delete
+            {{ userToDelete.name }} {{ userToDelete.surName }} ?
+          </div>
+
+          <br />
           <div align="center">
             <v-btn @click="approveDelete">Yes</v-btn>
-            <v-btn class="ml-5" @click="hidePopup">No</v-btn>
+            <v-btn class="ml-5" @click="cancelDelete">No</v-btn>
           </div>
         </v-card-text>
       </v-card>
@@ -36,30 +41,32 @@
 import { mapGetters, mapActions } from "vuex";
 export default {
   name: "PopupInfo",
-  props: {
-    action: {
-      type: Boolean,
-      default: false,
-    },
-  },
 
   data() {
     return {};
   },
   computed: {
-    ...mapGetters(["getInfoPopupStatus"]),
+    ...mapGetters(["getDeletePopupStatus", "getUserToDelete"]),
+
+    userToDelete() {
+      return this.getUserToDelete;
+    },
   },
 
   methods: {
-    ...mapActions(["dispatchHideInfoPopup", "dispatchShowInfoPopup"]),
-    hidePopup() {
-      this.dispatchHideInfoPopup();
-    },
-    showPopup() {
-      this.dispatchShowInfoPopup();
+    ...mapActions(["HIDE_deletePOPUP", "SHOW_SNACKBAR", "DELETE_USER"]),
+
+    cancelDelete() {
+      this.HIDE_deletePOPUP();
     },
     approveDelete() {
-      this.$emit("deleteApproved");
+      this.HIDE_deletePOPUP();
+      this.DELETE_USER(this.userToDelete.uuid);
+      this.SHOW_SNACKBAR();
+    },
+
+    hidePopup() {
+      this.HIDE_deletePOPUP();
     },
   },
 };

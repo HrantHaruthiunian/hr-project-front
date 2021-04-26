@@ -5,9 +5,7 @@
         <v-card-actions>
           <span>Notations list</span>
           <v-spacer></v-spacer>
-          <v-icon class="right" @click.stop="hideNotationsList"
-            >mdi-close</v-icon
-          >
+          <v-icon class="right" @click="hideNotationsList">mdi-close</v-icon>
         </v-card-actions>
       </v-card>
       <v-row no-gutters>
@@ -78,9 +76,9 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["dispatchHideNotations"]),
+    ...mapActions(["HIDE_NOTATIONS_LIST"]),
     hideNotationsList() {
-      this.dispatchHideNotations();
+      this.HIDE_NOTATIONS_LIST();
     },
   },
 };
