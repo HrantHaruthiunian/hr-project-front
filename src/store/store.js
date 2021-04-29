@@ -1,16 +1,22 @@
+import axios from 'axios';
 import Vue from 'vue';
 import Vuex from 'vuex';
+import users from './modules/users.js'
 
-Vue.use(Vuex);
+Vue.use(Vuex, axios);
 
 export const store = new Vuex.Store({
 
    state: {
-      users: [
-         { uuid: "uuid-1", name: "Name 1", surName: "surName 1", dateOfBirth: "DateOf Birth 1", signUpDate: "signUpDate 1" },
-         { uuid: "uuid-2", name: "Name 2", surName: "surName 2", dateOfBirth: "DateOf Birth 2", signUpDate: "signUpDate 2" },
-         { uuid: "uuid-3", name: "Name 3", surName: "surName 3", dateOfBirth: "DateOf Birth 3", signUpDate: "signUpDate 3" }
-      ],
+      isFormPopupOpen: false,
+      isDeletePopupOpen: false,
+      isSnackbarOpen: false,
+
+      isRequestsListVisible: false,
+      isNotationsListVisible: false,
+      userToDelete: {},
+
+
       requests: [
          {
             uuid: "uuid-1", title: "Title-1", status: "Proposed", openingDate: "opening Date 1", lastChangedDateTime: "log date 1",
@@ -30,6 +36,111 @@ export const store = new Vuex.Store({
          { uuid: "uuid-2", subject: "Subject 2", openingDate: "opening Date 2", content: "content 2", user_uuid: "by user 2" },
          { uuid: "uuid-3", subject: "Subject 3", openingDate: "opening Date 3", content: "content 3", user_uuid: "by user 3" }
       ],
-   }
+   },
 
-})
+   mutations: {
+
+      show_formPopup() {
+         this.state.isFormPopupOpen = true;
+      },
+      hide_formPopup() {
+         this.state.isFormPopupOpen = false;
+      },
+      show_deletePopup(state, user) {
+         this.state.isDeletePopupOpen = true;
+         this.state.userToDelete = user;
+      },
+      hide_deletePopup() {
+         this.state.isDeletePopupOpen = false;
+      },
+      show_Snackbar() {
+         this.state.isSnackbarOpen = true;
+      },
+      hide_Snackbar() {
+         this.state.isSnackbarOpen = false;
+      },
+
+
+      show_Requests(state) {
+         state.isRequestsListVisible = true;
+      },
+      hide_Requests(state) {
+         state.isRequestsListVisible = false;
+      },
+      show_Notations(state) {
+         state.isNotationsListVisible = true;
+      },
+      hide_Notations(state) {
+         state.isNotationsListVisible = false;
+      },
+   },
+
+   getters: {
+
+      getFormPopupStatus(state) {
+         return state.isFormPopupOpen;
+      },
+      getDeletePopupStatus(state) {
+         return state.isDeletePopupOpen;
+      },
+      getSnackbarStatus(state) {
+         return state.isSnackbarOpen;
+      },
+      getRequestsVisibility(state) {
+         return state.isRequestsListVisible;
+      },
+      getNotationsVisibility(state) {
+         return state.isNotationsListVisible;
+      },
+      getUserToDelete(state) {
+         return state.userToDelete;
+      },
+
+   },
+
+   actions: {
+
+      SHOW_formPOPUP({ commit }) {
+         commit('show_formPopup');
+      },
+      HIDE_formPOPUP({ commit }) {
+         commit('hide_formPopup');
+      },
+      SHOW_deletePOPUP({ commit }, user) {
+         commit('show_deletePopup', user);
+      },
+      HIDE_deletePOPUP({ commit }) {
+         commit('hide_deletePopup');
+      },
+      SHOW_SNACKBAR({ commit }) {
+         commit('show_Snackbar');
+      },
+      HIDE_SNACKBAR({ commit }) {
+         commit('hide_Snackbar');
+      },
+
+      SHOW_REQUESTS_LIST({ commit }) {
+         commit('show_Requests');
+      },
+      HIDE_REQUESTS_LIST({ commit }) {
+         commit('hide_Requests');
+      },
+      SHOW_NOTATIONS_LIST({ commit }) {
+         commit('show_Notations');
+      },
+      HIDE_NOTATIONS_LIST({ commit }) {
+         commit('hide_Notations');
+      },
+   },
+
+   modules: {
+      users
+   }
+});
+
+
+export const apiURLS = {
+   usersAPI: "http://localhost:3000/v1/users/",
+   requestsAPI: "http://localhost:3000/v1/requests/",
+   notationsAPI: "http://localhost:3000/v1/notations/",
+};

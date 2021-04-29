@@ -1,51 +1,52 @@
 <template>
   <v-app>
-    <v-app-bar app color="grey" dark>
-      <div class="d-flex align-center">
-        <v-img
-          alt="HEX Division Logo"
-          class="shrink mr-2"
-          contain
-          src="./assets/HEX_Logo.png"
-          transition="scale-transition"
-          width="80"
-        />
-      </div>
-
-      <v-spacer></v-spacer>
-
-      <v-btn href="http://localhost:3000/v1/users" target="_blank" text>
-        <span class="mr-1">Users</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-      <v-btn href="http://localhost:3000/v1/requests" target="_blank" text>
-        <span>Vacation requests</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-      <v-btn href="http://localhost:3000/v1/notations" target="_blank" text>
-        <span>Notations</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-    </v-app-bar>
+    <app-nav-bar></app-nav-bar>
 
     <v-main>
-      <HelloWorld />
+      <app-users
+        v-if="getUsersVisibility"
+        :key="getRefreshUsersComponent"
+      ></app-users>
+      <app-requests v-if="getRequestsVisibility"></app-requests>
+      <app-notations v-if="getNotationsVisibility"></app-notations>
     </v-main>
+
+    <app-footer></app-footer>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from "./components/layout/HelloWorld";
+import Navbar from "./components/layout/Navbar.vue";
+import Users from "./components/users/Users.vue";
+import Requests from "./components/requests/Requests.vue";
+import Notations from "./components/notations/Notations.vue";
+import Footer from "./components/layout/Footer.vue";
+import { mapGetters } from "vuex";
 
 export default {
   name: "App",
 
   components: {
-    HelloWorld,
+    "app-nav-bar": Navbar,
+    "app-users": Users,
+    "app-requests": Requests,
+    "app-notations": Notations,
+    "app-footer": Footer,
   },
 
-  data: () => ({
-    //
-  }),
+  async created() {
+    this.$store.dispatch("FETCH_USERS");
+  },
+
+  computed: {
+    ...mapGetters([
+      "getUsersVisibility",
+      "getRequestsVisibility",
+      "getNotationsVisibility",
+      "getRefreshUsersComponent",
+    ]),
+  },
 };
 </script>
+
+
