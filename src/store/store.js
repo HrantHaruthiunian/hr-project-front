@@ -145,8 +145,8 @@ export const apiURLS = {
    notationsAPI: "https://hr-back.herokuapp.com/v1/notations/",
 };
 
-export const apiLocalURLS {
-   usersAPI: "http://localhost:3000/v1/users/",
-   requestsAPI: "http://localhost:3000/v1/requests/",
-   notationsAPI: "http://localhost:3000/v1/notations/",
-};
+//export const apiLocalURLS {
+ //  usersAPI: "http://localhost:3000/v1/users/",
+ //  requestsAPI: "http://localhost:3000/v1/requests/",
+ //  notationsAPI: "http://localhost:3000/v1/notations/",
+//};
