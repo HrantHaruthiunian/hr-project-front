@@ -132,7 +132,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["HIDE_formPOPUP", "ADD_USER"]),
+    ...mapActions(["HIDE_formPOPUP", "ADD_USER", "SHOW_USERS_LIST"]),
 
     hidePopup() {
       this.HIDE_formPOPUP();
@@ -141,6 +141,7 @@ export default {
       this.$v.$touch();
       this.ADD_USER(this.user);
       this.hidePopup();
+      this.SHOW_USERS_LIST();
     },
     clear() {
       this.$v.$reset();
